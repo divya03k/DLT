@@ -1,0 +1,34 @@
+import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+X_train = X_train.reshape(-1,28,28,1)/255.0
+X_test = X_test.reshape(-1,28,28,1)/255.0
+model = Sequential([
+    Conv2D(32, (3,3), activation='relu', input_shape=(28,28,1)),
+    MaxPooling2D((2,2)),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dense(10, activation='softmax')
+])
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model.fit(X_train, y_train, epochs=5, validation_data=(X_test, y_test))
+
+
+OUTPUT:
+Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
+11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 1s 0us/step
+/usr/local/lib/python3.11/dist-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Epoch 1/5
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 46s 23ms/step - accuracy: 0.9098 - loss: 0.3006 - val_accuracy: 0.9791 - val_loss: 0.0596
+Epoch 2/5
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 79s 22ms/step - accuracy: 0.9852 - loss: 0.0514 - val_accuracy: 0.9851 - val_loss: 0.0433
+Epoch 3/5
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 82s 22ms/step - accuracy: 0.9909 - loss: 0.0296 - val_accuracy: 0.9847 - val_loss: 0.0439
+Epoch 4/5
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 41s 22ms/step - accuracy: 0.9942 - loss: 0.0192 - val_accuracy: 0.9872 - val_loss: 0.0432
+Epoch 5/5
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 41s 22ms/step - accuracy: 0.9959 - loss: 0.0128 - val_accuracy: 0.9840 - val_loss: 0.0528
+<keras.src.callbacks.history.History at 0x7bca7a7bfa90>
